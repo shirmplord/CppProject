@@ -1,0 +1,4 @@
+                    Apple       5          50    50
+                   Banana     1.2          10    80
+                   Carrot     1.3         100     0
+12
