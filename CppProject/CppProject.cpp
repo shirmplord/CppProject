@@ -108,7 +108,7 @@ StockManager::StockManager() {
 }
 
 StockManager::~StockManager() {}
-
+//Add item
 void StockManager::AddItem(const Item item) {
 	bool exist = false;
 	auto i = itemList.begin();
@@ -121,7 +121,7 @@ void StockManager::AddItem(const Item item) {
 	}
 	if (!exist) itemList.push_back(item);
 }
-
+//Add item 
 void StockManager::AddItem(const string name, float price, int available, int sold) {
 	bool exist = false;
 	auto i = itemList.begin();
@@ -145,7 +145,7 @@ void StockManager::AddItem(const string name, float price, int available, int so
 		itemList.push_back(newItem);
 	}
 }
-
+//Sell item
 void StockManager::SellItem(const string name, int amount) {
 	bool exist = false;
 	auto i = itemList.begin();
@@ -173,7 +173,7 @@ void StockManager::SellItem(const string name, int amount) {
 	if (exist) Notify("Sold item", name, 0.0, amount);
 	else Notify("Not in stock");
 }
-
+//Update Price
 void StockManager::UpdatePrice(const string name, float price) {
 	bool exist = false;
 	auto i = itemList.begin();
@@ -186,7 +186,7 @@ void StockManager::UpdatePrice(const string name, float price) {
 	}
 	if (!exist) Notify("Not in stock");
 }
-
+//Replenish stock
 void StockManager::RepStock(const string name, int amount) {
 	auto i = itemList.begin();
 	while (i != itemList.end()) {
@@ -196,13 +196,13 @@ void StockManager::RepStock(const string name, int amount) {
 		i++;
 	}
 }
-
+//Clear stock listing
 void StockManager::ClearStockList() {
 	itemList.clear();
 	revenue = 0;
 	SaveStock();
 }
-
+//Get report
 void StockManager::GetReport() const {
 	cout << "Items available in stock:" << endl;
 	cout << setiosflags(ios::left);
@@ -217,7 +217,7 @@ void StockManager::GetReport() const {
 	}
 	cout << "Total revenue: " << revenue << endl << endl;
 }
-
+//Save stock
 void StockManager::SaveStock() const {
 	ofstream stock;
 	stock.open("stock.txt");
@@ -228,7 +228,7 @@ void StockManager::SaveStock() const {
 	}
 	stock << revenue;
 }
-
+//Change string to item
 Item ToItem(string input) {
 	unsigned int i = 0;
 	string temp;
@@ -273,7 +273,7 @@ Item ToItem(string input) {
 	}
 	return item;
 }
-
+//Read stock from file
 void StockManager::ReadStock() {
 	char c;
 	string temp, result("");
@@ -290,18 +290,18 @@ void StockManager::ReadStock() {
 	}
 	if (result != "") stringstream(result) >> revenue;
 }
-
+//Attach observer
 void StockManager::Attach(Observer* o) {
 	observers.push_back(o);
 }
-
+//Detach observer
 void StockManager::Detach(Observer* o) {
 	auto i = find(observers.begin(), observers.end(), o);
 	if (i != observers.end()) {
 		observers.erase(i);
 	}
 }
-
+//Notify Observer
 void StockManager::Notify(const string msg, const string name, const float price, const int amount) {
 	for (unsigned int i = 0; i < observers.size(); i++) {
 		observers[i]->Update(msg,name,price,amount);
@@ -316,7 +316,7 @@ ConsoleManager::ConsoleManager(StockManager* p) {
 }
 
 ConsoleManager::~ConsoleManager() {}
-
+//Update
 void ConsoleManager::Update(const string msg, const string name, const float price, const int amount) {
 	if (msg == "Item existed") {
 		cout << endl << "Item with the same name already in the list" << endl;
@@ -329,7 +329,7 @@ void ConsoleManager::Update(const string msg, const string name, const float pri
 		cout << "Sold " << amount << " " << name << endl;
 	} else ExecuteCmd(); 
 }
-
+//Print Menu
 void ConsoleManager::PrintMenu() {
 	cout << endl;
 	cout << "What would you like to do?: (Enter option number)" << endl;
@@ -344,7 +344,7 @@ void ConsoleManager::PrintMenu() {
 	cout << "9.  Print menu" << endl;
 	cout << "10. Exit program" << endl;
 }
-
+//Execute command
 void ConsoleManager::ExecuteCmd() {
 	int input;
 	bool finish = false;
@@ -404,7 +404,7 @@ void ConsoleManager::ExecuteCmd() {
 	}
 	if (!finish) this->Update();
 }
-
+//operator << for item
 ostream &operator<<(ostream &out, const Item &i) {
 	out << setfill(' ') << setw(25) << i.name;
 	out << setfill(' ') << setw(8) << i.price;
