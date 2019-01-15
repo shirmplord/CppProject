@@ -199,6 +199,7 @@ void StockManager::RepStock(const string name, int amount) {
 
 void StockManager::ClearStockList() {
 	itemList.clear();
+	revenue = 0;
 	SaveStock();
 }
 
