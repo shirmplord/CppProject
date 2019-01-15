@@ -44,10 +44,8 @@ public:
 	void RepStock(const string name, const int amount);
 	void ReadStock();
 	void UpdatePrice(const string name, float price);
-
 	void GetReport() const;
 	void SaveStock() const;
-
 	void Attach(Observer* o);
 	void Detach(Observer* o);
 	void Notify(const string msg = "",const string name = "", const float price = 0.0, const int amount = 0);
@@ -149,21 +147,24 @@ void StockManager::AddItem(const string name, float price, int available, int so
 }
 
 void StockManager::SellItem(const string name, int amount) {
-	GetReport();
 	bool exist = false;
 	auto i = itemList.begin();
 	while (i != itemList.end()) {
 		if (i->name == name) {
 			exist = true;
-			if (i->available == 0) break;
+			if (i->available == 0) {
+				exist = false;
+				break;
+			}
 			else if (amount < i->available) {
 				i->available -= amount;
 				i->sold += amount;
 				revenue += amount * i->price;
 			}
 			else {
+				amount = i->available;
 				i->sold += i->available;
-				revenue = i->price * i->available;
+				revenue += i->price * i->available;
 				i->available = 0;
 			}
 		}
